@@ -36,7 +36,7 @@ The project is structured as two main folders: client and server
 
 ## Demo
 
-Demo Video: (https://drive.google.com/drive/folders/1ruahn9M5Yrh31OGT1K92UBn3PH376u1S)
+Demo Video: https://drive.google.com/file/d/1l93Pa4K8XUxFQy_ZQOOrXhSQii9pr1hG/view?usp=sharing
 
 
 ## Installation & Setup
