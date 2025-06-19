@@ -67,7 +67,7 @@ const fetchUserSubmissions = async (
     let submissions = response.data.result;
     if (days && !isNaN(days)) {
       const cutoff = Date.now() / 1000 - days * 24 * 60 * 60;
-      submissions = submissions.filter((x) => x.time >= cutoff);
+      submissions = submissions.filter((x) => x.creationTimeSeconds >= cutoff);
     }
 
     return submissions;
@@ -90,7 +90,6 @@ const fetchContestProblems = async (handle, contestId) => {
     }
     const problems = problemResponse.data.result.problems;
 
-    
     const submissionResponse = await axios.get(
       `${BASE_URL}/contest.status?contestId=${contestId}&handle=${handle}`
     );

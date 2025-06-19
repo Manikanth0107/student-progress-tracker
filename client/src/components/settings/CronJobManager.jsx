@@ -42,7 +42,7 @@ function CronJobManager() {
       </Typography>
 
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-        Cron Schedule (e.g., <code>0 2 * * *</code> for 2 AM daily)
+        Cron Schedule
       </Typography>
 
       <TextField

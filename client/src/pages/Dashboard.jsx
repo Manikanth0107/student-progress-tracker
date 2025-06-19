@@ -78,9 +78,7 @@ function Dashboard() {
             value={stats.activeStudents}
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <StatCard title="Total Submissions" value={stats.totalSubmissions} />
-        </Grid>
+
         <Grid item xs={12} sm={6} md={3}>
           <StatCard title="Average Rating" value={stats.avgRating} />
         </Grid>

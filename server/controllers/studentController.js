@@ -110,26 +110,38 @@ const getStudentContests = async (req, res) => {
     const now = Date.now() / 1000;
     const visibleContests = contests.filter(
       (c) => now - c.ratingUpdateTimeSeconds > 60 * 60
-    ); 
+    );
 
-    
-    for (const contest of visibleContests) {
-      try {
-        const { unsolvedCount } = await fetchContestProblems(
-          handle,
-          contest.contestId
-        );
-        contest.unsolvedCount = unsolvedCount;
-      } catch (error) {
-        console.error(
-          `Failed to fetch problems for contest ${contest.contestId}:`,
-          error
-        );
-        contest.unsolvedCount = null; 
-      }
-    }
+    // ✅ Run unsolvedCount fetches in parallel
+    await Promise.all(
+      visibleContests.map(async (contest) => {
+        // If unsolvedCount already exists in DB, skip fetch
+        if (contest.unsolvedCount !== undefined) return;
 
-    res.json(contests);
+        try {
+          const { unsolvedCount } = await fetchContestProblems(
+            handle,
+            contest.contestId
+          );
+          contest.unsolvedCount = unsolvedCount;
+
+          // ✅ Cache the value in the Student model
+          await studentService.saveContestUnsolvedCount(
+            handle,
+            contest.contestId,
+            unsolvedCount
+          );
+        } catch (error) {
+          console.error(
+            `Failed to fetch problems for contest ${contest.contestId}:`,
+            error
+          );
+          contest.unsolvedCount = null;
+        }
+      })
+    );
+
+    res.json(visibleContests);
   } catch (error) {
     console.error("Get contests error:", error);
     res.status(400).json({ error: error.message });

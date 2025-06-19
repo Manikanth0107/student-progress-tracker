@@ -29,13 +29,16 @@ ChartJS.register(
 function RatingChart({ contestData, filterDays }) {
   const { theme } = useContext(ThemeContext);
 
-  
+  const safeContestData = Array.isArray(contestData) ? contestData : [];
+
   const chartData = {
-    labels: contestData.map((c) => new Date(c.ratingUpdateTimeSeconds * 1000)),
+    labels: safeContestData.map(
+      (c) => new Date(c.ratingUpdateTimeSeconds * 1000)
+    ),
     datasets: [
       {
         label: "Rating",
-        data: contestData.map((c) => c.newRating),
+        data: safeContestData.map((c) => c.newRating),
         borderColor: theme === "dark" ? "#90CAF9" : "#1976D2",
         backgroundColor: theme === "dark" ? "#E3F2FD" : "#BBDEFB",
         fill: false,
@@ -67,7 +70,7 @@ function RatingChart({ contestData, filterDays }) {
         type: "time",
         time: {
           unit: "month",
-          tooltipFormat: "PPP", 
+          tooltipFormat: "PPP",
         },
         title: {
           display: true,
@@ -100,7 +103,7 @@ function RatingChart({ contestData, filterDays }) {
         Rating Trend
       </Typography>
 
-      {contestData.length > 0 ? (
+      {safeContestData.length > 0 ? (
         <Line data={chartData} options={chartOptions} />
       ) : (
         <Typography align="center" color="text.secondary">

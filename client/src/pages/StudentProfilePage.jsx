@@ -172,10 +172,21 @@ function StudentProfilePage() {
                       ).toLocaleDateString()}
                     </TableCell>
                     <TableCell>{contest.rank}</TableCell>
-                    <TableCell>
+                    <TableCell
+                      sx={{
+                        color:
+                          contest.newRating - contest.oldRating > 0
+                            ? "green"
+                            : contest.newRating - contest.oldRating < 0
+                            ? "red"
+                            : "text.primary",
+                        fontWeight: 500,
+                      }}
+                    >
                       {contest.newRating - contest.oldRating >= 0 ? "+" : ""}
                       {contest.newRating - contest.oldRating}
                     </TableCell>
+
                     <TableCell>{contest.unsolvedCount || 0}</TableCell>
                   </TableRow>
                 ))}
